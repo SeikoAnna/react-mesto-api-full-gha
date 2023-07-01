@@ -1,0 +1,12 @@
+.header__ident {
+    font-size: 18px;
+    line-height: 22px;
+    color: #fff;
+    text-decoration: none;
+    text-align: right;
+    transition: 0.2s;
+  }
+  
+  .header__ident:hover {
+    opacity: 0.6;
+  }
