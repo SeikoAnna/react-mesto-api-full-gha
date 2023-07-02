@@ -15,6 +15,7 @@ class Api {
   setUserInfo({ name, about }) {
     return fetch(this._baseUrl + "/users/me", {
       method: "PATCH",
+      credentials: 'include',
       headers: this._headers,
       body: JSON.stringify({
         name: name,
@@ -26,6 +27,7 @@ class Api {
   setNewAvatar(avatarLink) {
     return fetch(this._baseUrl + "/users/me/avatar", {
       method: "PATCH",
+      credentials: 'include',
       headers: this._headers,
       body: JSON.stringify(avatarLink),
     }).then((res) => this._checkApi(res));
@@ -34,6 +36,7 @@ class Api {
   getUserInfo() {
     return fetch(this._baseUrl + "/users/me", {
       method: "GET",
+      credentials: 'include',
       headers: this._headers,
     }).then((res) => this._checkApi(res));
   }
@@ -41,6 +44,7 @@ class Api {
   getCards() {
     return fetch(this._baseUrl + "/cards", {
       method: "GET",
+      credentials: 'include',
       headers: this._headers,
     }).then((res) => this._checkApi(res));
   }
@@ -48,6 +52,7 @@ class Api {
   addNewCard(item) {
     return fetch(this._baseUrl + "/cards", {
       method: "POST",
+      credentials: 'include',
       headers: this._headers,
       body: JSON.stringify(item),
     }).then((res) => this._checkApi(res));
@@ -58,15 +63,17 @@ class Api {
   }
 
   _addLike(cardId) {
-    return fetch(this._baseUrl + `/cards/likes/${cardId}`, {
+    return fetch(this._baseUrl + '/cards/' + cardId + '/likes', {
       method: "PUT",
+      credentials: 'include',
       headers: this._headers,
     }).then((res) => this._checkApi(res));
   }
 
   _removeLike(cardId) {
-    return fetch(this._baseUrl + `/cards/likes/${cardId}`, {
+    return fetch(this._baseUrl + '/cards/' + cardId + '/likes', {
       method: "DELETE",
+      credentials: 'include',
       headers: this._headers,
     }).then((res) => this._checkApi(res));
   }
@@ -74,15 +81,16 @@ class Api {
   deleteCard(cardId) {
     return fetch(this._baseUrl + `/cards/${cardId}`, {
       method: "DELETE",
+      credentials: 'include',
       headers: this._headers,
     }).then((res) => this._checkApi(res));
   }
 }
 
 export const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-61",
+  baseUrl: "https://api.seiko.anna.nomoreparties.sbs",
   headers: {
-    authorization: "b975e0db-5f1c-4fce-81c7-76258185d015",
+    // authorization: "b975e0db-5f1c-4fce-81c7-76258185d015",
     "Content-Type": "application/json",
   },
 });

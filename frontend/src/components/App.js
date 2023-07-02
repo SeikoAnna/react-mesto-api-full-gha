@@ -47,7 +47,7 @@ export default function App() {
   const [isRegister, setRegister] = useState(false);
 
   function loginOut() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     setLoggedIn(false);
     setEmail("");
     navigate("/sign-in", { replace: true });
@@ -58,12 +58,12 @@ export default function App() {
   }, [token]);
 
   const handleTokenCheck = () => {
-    const jwt = localStorage.getItem("token");
+    const jwt = localStorage.getItem("userId");
     if (jwt) {
       auth
         .getUser(jwt)
-        .then((res) => {
-          setEmail(res.data.email);
+        .then((data) => {
+          setEmail(data.email);
           setLoggedIn(true);
           navigate("/", { replace: true });
         })
@@ -73,7 +73,7 @@ export default function App() {
     }
   };
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem("userId");
     if (jwt) setToken(jwt);
     api
       .getUserInfo()
@@ -84,10 +84,10 @@ export default function App() {
     api
       .getCards()
       .then((res) => {
-        setCards(res.reverse);
+        setCards(res.reverse());
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isLoggedIn]);
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -120,7 +120,7 @@ export default function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
     api
       .changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
@@ -217,7 +217,7 @@ export default function App() {
     auth
       .authorization(email, password)
       .then((token) => {
-        localStorage.setItem("token", token);
+        localStorage.setItem('userId', token._id);
         setToken(token);
       })
       .catch((err) => console.log(err));
@@ -227,7 +227,7 @@ export default function App() {
     auth
       .register(email, password)
       .then((res) => {
-        if (res.data) {
+        if (res) {
           setRegister({
             status: true,
             message: "Вы успешно зарегистрировались!",
